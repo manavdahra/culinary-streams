@@ -1,0 +1,214 @@
+{
+  "name": "menu",
+  "namespace": "com.hellofresh.culinary.menu_planning.menu_planning_service",
+  "type": "record",
+  "fields": [
+    {
+      "name": "id",
+      "doc": "Menu Id in UUID format",
+      "type": "string"
+    },
+    {
+      "name": "week",
+      "doc": "Week information of the menu",
+      "type": {
+        "type": "record",
+        "name": "week",
+        "fields": [
+          {
+            "name": "iso_code",
+            "doc": "Week for which menu is defined. ISO week format",
+            "type": "string"
+          },
+          {
+            "name": "number",
+            "doc": "Week number of the year",
+            "type": "int"
+          },
+          {
+            "name": "year",
+            "doc": "Year of the menu",
+            "type": "int"
+          }
+        ]
+      }
+    },
+    {
+      "name": "market",
+      "doc": "Market is a cluster of countries that the recipe is valid for, eg: Nordics, ANZ",
+      "type": "string"
+    },
+    {
+      "name": "region",
+      "doc": "Region is the segment where a menu is used (eg. DK, SE & NO)",
+      "type": {
+        "type": "record",
+        "name": "region",
+        "fields": [
+          {
+            "name": "code",
+            "doc": "region code",
+            "type": "string"
+          },
+          {
+            "name": "is_default",
+            "doc": "Specifies if the region is default for the market",
+            "type": "boolean"
+          },
+          {
+            "name": "language",
+            "doc": "DEPRECATED! use languages",
+            "type": "string"
+          },
+          {
+            "name": "languages",
+            "doc": "Languages of menu based on region",
+            "type": {
+              "type": "array",
+              "items": "string"
+            },
+            "default": []
+          }
+        ]
+      }
+    },
+    {
+      "name": "product_family",
+      "doc": "Associated product family of the menu",
+      "type": "string"
+    },
+    {
+      "name": "slot_numbers",
+      "doc": "Indexes of all slots present in the menu",
+      "type": {
+        "type": "array",
+        "items": "int"
+      },
+      "default": []
+    },
+    {
+      "name": "recipes",
+      "doc": "list of slots and recipes",
+      "type": {
+        "type": "array",
+        "items": {
+          "name": "recipe",
+          "type": "record",
+          "fields": [
+            {
+              "name": "slot",
+              "type": {
+                "name": "slot",
+                "doc": "The index of the slot",
+                "type": "record",
+                "fields": [
+                  {
+                    "name": "number",
+                    "doc": "Defines the slot number in which a recipe can be assigned",
+                    "type": "int"
+                  },
+                  {
+                    "name": "slot_group",
+                    "doc": "slot group of the recipe",
+                    "type": "string"
+                  },
+                  {
+                    "name": "sub_type",
+                    "doc": "sub type of item assigned in the slot. Eg - for addons single-sku/recipe-based",
+                    "type": ["null", "string"],
+                    "default": null
+                  }
+                ]
+              }
+            },
+            {
+              "name": "recipe_id",
+              "doc": "UUID of the recipe",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "addons",
+      "doc": "list of slots and addons",
+      "type": {
+        "type": "array",
+        "items": {
+          "name": "addon",
+          "type": "record",
+          "fields": [
+            {
+              "name": "slot",
+              "type": "slot"
+            },
+            {
+              "name": "addon_id",
+              "doc": "UUID of the addon",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "default": []
+    },
+    {
+      "name": "tags",
+      "doc": "list of tags associated to the slot",
+      "type": {
+        "type": "array",
+        "items": {
+          "name": "tag",
+          "type": "record",
+          "fields": [
+            {
+              "name": "slot_number",
+              "doc": "Defines the slot number",
+              "type": "int"
+            },
+            {
+              "name": "tag_id",
+              "type": "string",
+              "doc": "unique identifier of tag"
+            },
+            {
+              "name": "tag_name",
+              "type": "string",
+              "doc": "unique name of the tag"
+            }
+          ]
+        }
+      },
+      "default": []
+    },
+    {
+      "name": "created_at",
+      "doc": "ISO 8601 datetime of the time the recipe was created",
+      "type": "string"
+    },
+    {
+      "name": "updated_at",
+      "doc": "ISO 8601 datetime of the time the recipe was updated",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "doc": "menu status",
+      "default": "draft"
+    },
+    {
+      "name": "brand_name",
+      "type": "string",
+      "doc": "Brand name",
+      "default": ""
+    },
+    {
+      "name": "published_at",
+      "doc": "ISO 8601 datetime of the time event published",
+      "type": "string",
+      "default": ""
+    }
+  ]
+}

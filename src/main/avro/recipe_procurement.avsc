@@ -1,0 +1,346 @@
+{
+  "name": "recipe_procurement",
+  "namespace": "com.hellofresh.scm.culinary.culinary_planning_service",
+  "type": "record",
+  "fields": [
+    {
+      "name": "event_type",
+      "type": {
+        "name": "event_types",
+        "type": "enum",
+        "symbols": [
+          "entity_created",
+          "entity_updated"
+        ]
+      }
+    },
+    {
+      "name": "id",
+      "doc": "UUID",
+      "type": "string"
+    },
+    {
+      "name": "market",
+      "doc": "Recipe market",
+      "type": "string"
+    },
+    {
+      "name": "title",
+      "doc": "Customer-facing title",
+      "type": "string"
+    },
+    {
+      "name": "subtitle",
+      "doc": "Customer-facing subtitle",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "doc": "Recipe state value based on the recipe-development workflow",
+      "type": "string"
+    },
+    {
+      "name": "recipe_code",
+      "doc": "Human-readable recipe identifier",
+      "type": "string"
+    },
+    {
+      "name": "version",
+      "doc": "Version number of this recipe",
+      "type": "int"
+    },
+    {
+      "name": "cloned_from",
+      "doc": "Direct parent recipe UUID. By default is an empty field or 00000000-0000-0000-0000-000000000000",
+      "type": "string"
+    },
+    {
+      "name": "recipe_type",
+      "doc": "Characterises recipe type with a value from a list",
+      "type": "string"
+    },
+    {
+      "name": "created_by",
+      "doc": "Recipe author's name/username",
+      "type": "string"
+    },
+    {
+      "name": "is_default",
+      "doc": "Set to true if this version of the Recipe is the default among all the versions that exists.",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "used_week",
+      "doc": "ISO 8601 weeks the recipe was available on: [2020-W31, 2020-W32]",
+      "type": {
+        "type": "array",
+        "items": "string"
+      },
+      "default": []
+    },
+    {
+      "name": "target_products",
+      "doc": "Specific product families: [classic-box, family-box]",
+      "type": {
+        "type": "array",
+        "items": "string"
+      },
+      "default": []
+    },
+    {
+      "name": "culinary_skus",
+      "doc": "Culinary SKUs contained by the recipe",
+      "type": {
+        "type": "array",
+        "items": {
+          "name": "culinary_skus_record",
+          "type": "record",
+          "fields": [
+            {
+              "name": "id",
+              "doc": "Culinary SKU UUID",
+              "type": "string"
+            },
+            {
+              "name": "ingredient_id",
+              "doc": "HQ UUID value needed for REMPS to map it further into HQ_ID and push to recipe pusher to HQ. HQ receiver enpoint is then using HQ_ID to update their things.",
+              "type": "string"
+            },
+            {
+              "name": "segment_id",
+              "doc": "The segment that the sku belongs to within a market - needed by REMPS for internal mapping",
+              "type": "int",
+              "default": 0
+            },
+            {
+              "name": "segment_name",
+              "doc": "The segment name that the sku belongs to within a market",
+              "type": "string",
+              "default": ""
+            },
+            {
+              "name": "servings_ratio",
+              "doc": "The amount of SKU used per serving size",
+              "type": {
+                "type": "map",
+                "values": "float",
+                "default": {}
+              }
+            },
+            {
+              "name": "code",
+              "doc": "Human-readable identifier of the Culinary SKU",
+              "default": "",
+              "type": "string"
+            },
+            {
+              "name": "name",
+              "doc": "The Culinary SKU's name",
+              "default": "",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "pantry_items",
+      "doc": "Pantry items contained by the recipe",
+      "type": {
+        "type": "array",
+        "items": {
+          "name": "pantry_item_record",
+          "type": "record",
+          "fields": [
+            {
+              "name": "id",
+              "doc": "Pantry item UUID",
+              "type": "string"
+            },
+            {
+              "name": "ingredient_id",
+              "doc": "HQ UUID value needed for REMPS to map it further into HQ_ID and push to recipe pusher to HQ. HQ receiver enpoint is then using HQ_ID to update their things.",
+              "type": "string"
+            },
+            {
+              "name": "servings_ratio",
+              "doc": "The amount of pantry item used per serving size",
+              "type": {
+                "type": "map",
+                "values": "float",
+                "default": {}
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "prep_time",
+      "doc": "Approximate min time required to prepare ingredients before cooking. ISO8601 interval string",
+      "type": "string"
+    },
+    {
+      "name": "prep_time_max",
+      "doc": "Approximate max time required to prepare ingredients before cooking. ISO8601 interval string ",
+      "type": "string",
+      "default": "PT0M"
+    },
+    {
+      "name": "active_cooking_time",
+      "doc": "Approximate min time actively working with ingredients during cooking, for example frying onions. Also called hands-on time. ISO8601 interval string",
+      "type": "string"
+    },
+    {
+      "name": "active_cooking_time_max",
+      "doc": "Approximate max time actively working with ingredients during cooking, for example frying onions. Also called hands-on time. ISO8601 interval string",
+      "type": "string",
+      "default": "PT0M"
+    },
+    {
+      "name": "passive_cooking_time",
+      "doc": "Approximate min time passively cooking ingredients, for example leaving something in the oven. Also called oven time. ISO8601 interval string",
+      "type": "string"
+    },
+    {
+      "name": "passive_cooking_time_max",
+      "doc": "Approximate max time passively cooking ingredients, for example leaving something in the oven. Also called oven time. ISO8601 interval string",
+      "type": "string",
+      "default": "PT0M"
+    },
+    {
+      "name": "spiciness",
+      "doc": "Scale from 0 - 3 chillis representing the level of heat from spice present in the dish",
+      "type": "int"
+    },
+    {
+      "name": "cuisine",
+      "doc": "Cooking style or flavor provide characteristic of this region or culture. One value from a list. Example: fusion",
+      "type": "string"
+    },
+    {
+      "name": "dish_type",
+      "doc": "Similar to cuisine it is also used to characterise our recipes to understand what works well with customers and help menu planners. One value from a list. Example: Bowl | Burger | Risotto",
+      "type": "string"
+    },
+    {
+      "name": "cooking_methods",
+      "doc": "The cooking methods used in the recipe. The accepted values are: None, Oven, Stovetop",
+      "type": {
+        "type": "array",
+        "items": "string"
+      }
+    },
+    {
+      "name": "target_preferences",
+      "doc": "Specific taste preferences this recipe can be used on. Many values from a list. Example: [quick, balanced, discovery]",
+      "type": {
+        "type": "array",
+        "items": "string"
+      },
+      "default": []
+    },
+    {
+      "name": "created_at",
+      "doc": "ISO 8601 datetime of the time of creating the recipe",
+      "type": "string"
+    },
+    {
+      "name": "updated_at",
+      "doc": "ISO 8601 datetime of the time of updating the recipe",
+      "type": "string"
+    },
+    {
+      "name": "brand",
+      "doc": "Brand of the recipe",
+      "type": "string",
+      "default": "HelloFresh"
+    },
+    {
+      "name": "recipe_contents",
+      "type": [
+        "null",
+        {
+          "name": "recipe_contents",
+          "type": "record",
+          "fields": [
+            {
+              "name": "primary_protein",
+              "type": "string"
+            },
+            {
+              "name": "secondary_protein",
+              "type": "string"
+            },
+            {
+              "name": "primary_starch",
+              "type": "string"
+            },
+            {
+              "name": "secondary_starch",
+              "type": "string"
+            },
+            {
+              "name": "primary_cheese",
+              "type": "string"
+            },
+            {
+              "name": "secondary_cheese",
+              "type": "string"
+            },
+            {
+              "name": "primary_dairy",
+              "type": "string"
+            },
+            {
+              "name": "secondary_dairy",
+              "type": "string"
+            },
+            {
+              "name": "sauce_paste",
+              "type": "string"
+            },
+            {
+              "name": "primary_fresh_herb",
+              "type": "string"
+            },
+            {
+              "name": "secondary_fresh_herb",
+              "type": "string"
+            },
+            {
+              "name": "primary_dry_spice",
+              "type": "string"
+            },
+            {
+              "name": "secondary_dry_spice",
+              "type": "string"
+            },
+            {
+              "name": "primary_fruit",
+              "type": "string"
+            },
+            {
+              "name": "secondary_fruit",
+              "type": "string"
+            },
+            {
+              "name": "primary_vegetable",
+              "type": "string"
+            },
+            {
+              "name": "secondary_vegetable",
+              "type": "string"
+            },
+            {
+              "name": "tertiary_vegetable",
+              "type": "string"
+            }
+          ]
+        }
+      ],
+      "default": null
+    }
+  ]
+}
